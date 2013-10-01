@@ -1,9 +1,6 @@
 A short set of notes for the Pearson Travel API.
 ================================================
 
-[Pearson Developer Portal For Apis](http://developer.pearson.com/apis) has the complete interactive documentation for each api.  
-This is a quick summary for Top 10 Travel.  
-
 #### Pearson TopTen Travel Api Endpoints:
 
 From a base URL of: http://api.pearson.com/v2/travel  

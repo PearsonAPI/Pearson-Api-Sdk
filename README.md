@@ -1,6 +1,5 @@
 A Javascript Client Library for the Pearson API. (requires jQuery)
 ===================================================================
-alpha release
 
 ### Setting up API and client details.
 

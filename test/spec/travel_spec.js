@@ -262,6 +262,41 @@ describe("Complete function checks", function() {
 });
 
 
+/// Food and Drink Checks
+
+describe("Food and drink specific methods", function() {
+	var foodTest = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw").api('foodanddrink').addEndpoint('recipes').addSearch('chicken');
+  	var recipes = $.fetch(foodTest);
+
+  	it("should return a 200 ok from the server", function() {
+  	  expect(recipes.json.status).toEqual(200);
+  	});
+
+  	it("should contain a results array", function () {
+  		expect(recipes.json.results).toBeDefined();
+  	});
+
+  	describe("the results methods", function() {
+  		var resArray = recipes.getRecipeNames();
+  		var fromame = recipes.getRecipeFromName(2);
+  		var testID = fromame.id
+  		var fromId = recipes.getRecipeById(testID)
+
+  		it("should return the names and ids  of the results array", function(){
+  			expect(resArray[0].id).toBeDefined();
+  			expect(resArray[0].recipeName).toBeDefined();;
+  		});
+
+  		it("should be able to get a result from that array by index number", function() {
+  		  expect(fromame.result).toBeDefined();
+  		});
+  	  		
+  	  	it("should be able to get the same result from the array by ID", function() {
+  	  	  expect(testID).toEqual(fromId.id);
+  	  	});
+  	});
+});
+
 
 
 

@@ -485,3 +485,72 @@ AjaxContent.prototype.getArticleObject = function (num) {
 
     });
 }
+
+/// FoodandDrink Methods
+
+AjaxContent.prototype.getRecipeNames = function(){
+    var results = this.json.results;
+
+    var len = results.length;
+    var out = [];
+
+    for (var i = 0; i < len; i++) {
+        if (typeof results[i].summary.title !== 'undefined') {
+            out.push({
+                recipeName: results[i].summary.title,
+                id: results[i].id
+            });
+        } else {
+            out.push({
+                recipeName: "No recipeName found",
+                id: 'No ID'
+
+            });
+        }
+    }
+    return out;
+
+
+}
+
+AjaxContent.prototype.getRecipeFromName = function(num){ // Where num is the recipe index in the results array
+    var rId = this.json.results[num].id;
+
+    var indRecipe = this.getRecipeById(rId);
+
+    return indRecipe;
+}
+
+
+AjaxContent.prototype.getRecipeById = function(id) {
+    var apiKey = this.json.components.apiKey;
+    var url = this.json.components.url + this.json.components.endpoint + '/' + id + '?' + apiKey.substr(1);
+
+    console.log(url);
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        timeout: 1000, // feel free to mod this 
+        contentType: 'text/plain',
+        xhrFields: {
+            withCredentials: false
+        },
+        async: false,
+        success: function (data) {
+            console.log(data);
+            result = data;
+
+        },
+        error: function (x, t, m) {
+            if (t === 'timeout') {
+                console.warn("Hmm, request timed out");
+            } else {
+                console.warn(t);
+            }
+        }
+
+    });
+
+    return result;
+}
