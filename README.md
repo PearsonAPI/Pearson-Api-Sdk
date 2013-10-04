@@ -2,6 +2,7 @@ A Javascript Client Library for the Pearson API. (requires jQuery)
 ===================================================================
 
 ### Setting up API and client details.
+Make sure you have included jQuery and sdk.js ...
 
 As standard the base url that the client adds to is:
 
