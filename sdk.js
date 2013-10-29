@@ -14,21 +14,24 @@ function Pearson(apiKey) {
     }
 }
 
-//Add api section - Can hard code above, but this allows for use in similar apis.
-
-Pearson.prototype.api = function (api) {
+Pearson.prototype.dictionaries = function() {
     'use strict';
-    if (typeof api === 'undefined') {
-        throw {
-            name: 'Api undefined',
-            message: 'Please select an API to work with'
-        };
-    } else {
-        this.url = this.base + api + '/';
-        return this;
-    }
+    this.api = "dictionaries";
+    return this;
 };
 
+Pearson.prototype.travel = function() {
+    'use strict';
+    this.api = "travel";
+    return this;
+};
+
+Pearson.prototype.foodanddrink = function() {
+    'use strict';
+    this.api = "foodanddrink"
+    this.
+    return this;
+};
 
 //List all datasets for an api
 
@@ -57,6 +60,8 @@ function grab(url) {
     return result;
 
 }
+
+
 
 Pearson.prototype.listDatasets = function () {
     'use strict';
@@ -142,7 +147,7 @@ Pearson.prototype.listDatasets = function () {
 }
 
 
-// Get a document by UID, if you know it!
+// Get a document by UID, if you know it! ///RETURN ATRICLE though this brings array or will when base and url are added.
 Pearson.prototype.getArticleById = function (id) {
     'use strict';
     if (typeof this.endpoint == 'undefined') {
@@ -221,6 +226,42 @@ Pearson.prototype.addPosition = function (lat, lon, dist) {
     this.position = pos;
     return this;
 };
+
+// Dictionary methods allowing empty default query string addtions
+Pearson.prototype.headword = function (headword) {
+    'use strict';
+    this.headword = headword;
+    return this;
+};
+
+Pearson.prototype.audio = function (audio) {
+    'use strict'
+    this.audio = audio;
+    return this;
+};
+
+Pearson.prototype.images = function (images) {
+    'use strict'
+    this.images = images;
+    return this;
+}
+
+function toQueryString(bits) {
+    var obj = {audio: bits.audio, images: bits.images }
+    var parts = [];
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i) && (typeof obj[i] !== "undefined" )) {
+            console.log(encodeURIComponent(i));
+            console.log(encodeURIComponent(obj[i]));
+            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        }
+        else 
+            parts.push(encodeURIComponent(i))
+    }
+    return parts.join("&");
+};
+
+
 
 // Construct Url for the API call
 Pearson.prototype.buildUrl = function () {
