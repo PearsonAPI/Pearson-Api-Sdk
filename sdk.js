@@ -4,10 +4,8 @@
 function Pearson(apiKey) {
     'use strict';
     if (typeof apiKey === 'undefined') {
-        throw {
-            name: 'Key Undefined Error',
-            message: 'An API key must be defined as a string'
-        };
+        this.base = 'http://api.pearson.com/v2/'
+        this.apiKey = ""
 
     } else {
         this.base = 'http://api.pearson.com/v2/';
@@ -288,15 +286,16 @@ function buildIt(objec) {
 
     url = url + objec.apiKey;
 
-    if (url.indexOf("undefined") != -1 || url.indexOf("NaN") != -1) {
-        throw {
-            name: 'Api or endpoint undefined',
-            message: 'Please select an API and an endpoint to work with'
-        }
-    } else {
+    //Redacted from version where apikey was mandatory
+    // if (url.indexOf("undefined") != -1 || url.indexOf("NaN") != -1) {
+    //     throw {
+    //         name: 'Api or endpoint undefined',
+    //         message: 'Please select an API and an endpoint to work with'
+    //     }
+    // } else {
 
         return url;
-    }
+    //}
 };
 
 
