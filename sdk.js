@@ -222,6 +222,18 @@ Pearson.prototype.addPosition = function (lat, lon, dist) {
     return this;
 };
 
+// Dictionaries query string compiler
+
+Pearson.prototype.headword = function (searchTerm) {
+    'use strict';
+    var searchString = '';
+    var terms = "&headword=" + encodeURIComponent(searchTerm);
+    searchString = searchString + terms;
+    this.headword = searchString.substr(1);
+    return this;
+};
+
+
 // Construct Url for the API call
 Pearson.prototype.buildUrl = function () {
     'use strict';
@@ -241,6 +253,12 @@ Pearson.prototype.buildUrl = function () {
     } else {
         url
     };
+    //dictionary mods
+    if (typeof this.headword !== 'undefined') {
+        url = url + this.headword
+    } else {
+        url
+    };//
     if (typeof this.position !== 'undefined') {
         url = url + this.position;
     } else {
