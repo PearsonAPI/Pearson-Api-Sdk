@@ -1,5 +1,5 @@
-// Pearson Top Ten Travel API wrapper.
-// Base Url for API call
+// Pearson Top Ten Travel API wrapper. V0.9
+// Base Url for API call http://api.pearson.com/v2/
 
 function Pearson(apiKey) {
     'use strict';
@@ -17,21 +17,24 @@ function Pearson(apiKey) {
 Pearson.prototype.dictionaries = function() {
     'use strict';
     this.api = "dictionaries";
+    this.url = this.base + this.api + "/"
     return this;
 };
 
 Pearson.prototype.travel = function() {
     'use strict';
     this.api = "travel";
+    this.url = this.base + this.api + "/"
     return this;
 };
 
 Pearson.prototype.foodanddrink = function() {
     'use strict';
     this.api = "foodanddrink"
-    this.
+    this.url = this.base + this.api + "/"
     return this;
 };
+
 
 //List all datasets for an api
 
@@ -136,27 +139,24 @@ Pearson.prototype.listDatasets = function () {
             id: results[i].id
         });
     }
-
-    // If you uncomment this, it will log out all the dataset ids and titles to the console...
-    // console.log(out.length);
-    // var top = out.length;
-    // for (var i = 0; i < top; i++) {
-    //     console.log(out[i].id + out[i].description);
-    // }
     return out;
 }
 
 
 // Get a document by UID, if you know it! ///RETURN ATRICLE though this brings array or will when base and url are added.
-Pearson.prototype.getArticleById = function (id) {
+Pearson.prototype.getById = function (id) {
     'use strict';
+    var results;
     if (typeof this.endpoint == 'undefined') {
         this.endpoint = 'topten';
-        var z = this.url + this.endpoint + '?' + id + this.apiKey;
-        return z;
+        var z = this.url + this.endpoint + '/' + id + "?" + this.apiKey.substr(1);
+         results = grab(z);
+         return results;
+
     } else {
-        var z = this.url + this.endpoint + '?' + id + this.apiKey;
-        return z;
+        var z = this.url + this.endpoint + '/' + id + "?" + this.apiKey.substr(1);
+         results = grab(z);
+         return results;
     }
 };
 
