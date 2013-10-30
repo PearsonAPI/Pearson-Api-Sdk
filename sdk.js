@@ -1,6 +1,6 @@
 // Pearson Top Ten Travel API wrapper. V0.9
 // Base Url for API call http://api.pearson.com/v2/
-
+/// BASE OBJECT
 function Pearson(apiKey) {
     'use strict';
     if (typeof apiKey === 'undefined') {
@@ -12,25 +12,137 @@ function Pearson(apiKey) {
         this.apiKey = "&apikey=" + apiKey;
         return this;
     }
-}
+};
+/////// BASE OBJECT END
 
+///// Dictionaries and methods
 Pearson.prototype.dictionaries = function() {
     'use strict';
     this.api = "dictionaries";
     this.url = this.base + this.api + "/"
+    this.addSearch = function (searchTerm ) {
+        var searchString = '';
+        var terms = "&search=" + encodeURIComponent(searchTerm);
+        searchString = searchString + terms;
+        this.searchTerm = searchString.substr(1);
+        return this;
+    };
+    this.headword = function (searchTerm) {
+        var searchString = '';
+        var terms = "&headword=" + encodeURIComponent(searchTerm);
+        searchString = searchString + terms;
+        this.headword = searchString.substr(1);
+        return this;
+    };
+
+    this.audio = function (audio) {
+        'use strict'
+        this.audio = audio;
+        return this;
+    };
+
+    this.images = function (images) {
+        'use strict'
+        this.images = images;
+        return this;
+    };
+
     return this;
 };
+// dictionary allow empty attribute WITHOUT = method. ////WIP
+function toQueryString(bits) {
+    var obj = {audio: bits.audio, images: bits.images }
+    var parts = [];
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i) && (typeof obj[i] !== "undefined" )) {
+            console.log(encodeURIComponent(i));
+            console.log(encodeURIComponent(obj[i]));
+            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        }
+        else 
+            parts.push(encodeURIComponent(i))
+    }
+    return parts.join("&");
+};
 
+
+///// Travel ////// listDatasets id attr needs fixing and full url test needed. 
 Pearson.prototype.travel = function() {
     'use strict';
     this.api = "travel";
     this.url = this.base + this.api + "/"
+
+    this.addDatasets = function() {
+        // If whitespace is a problem - add .replace(/\s+/g,"") to args to remove. Hopefully.
+        // This resets the url to nil before repopulating.
+        this.url = this.base + this.api + "/";
+        this.datasets = "";
+        var datasets;
+        var args = Array.prototype.slice.call(arguments);
+        this.datasets = args.join(",");
+        console.log(this.datasets);
+        this.url = this.url + this.datasets + '/';
+        return this;
+    };
+
+    this.topten = function() {
+        'use strict';
+        this.endpoint = "topten";
+        return this;
+    };
+
+    this.streetsmart = function() {
+        'use strict';
+        this.endpoint = "streetsmart";
+        return this;
+    };
+
+    this.aroundTown = function() {
+        'use strict';
+        this.endpoint = "around_town";
+        return this;
+    };
+
+    this.places = function() {
+        'use strict';
+        this.endpoint = "places";
+    };
+
+    this.addSearch = function (searchTerm ) {
+        var searchString = '';
+        var terms = "&search=" + encodeURIComponent(searchTerm);
+        searchString = searchString + terms;
+        this.searchTerm = searchString.substr(1);
+        return this;
+    };
+
+    // Add lat and long to query string
+    this.addPosition = function (lat, lon, dist) {
+        'use strict';
+        var pos;
+
+        if (typeof lat === 'undefined') {
+            console.log('latitude is not defined');
+        }
+        if (typeof lon === 'undefined') {
+            console.log('longitude is not defined');
+        }
+        if (typeof dist === 'undefined') {
+            console.log('Please enter a value for the search radius');
+        }
+        var pos = "&lat=" + lat + "&lon=" + lon + "&dist=" + dist;
+        this.position = pos;
+        return this;
+    };
     return this;
 };
 
+
+//// Food and Drink
 Pearson.prototype.foodanddrink = function() {
     'use strict';
-    this.api = "foodanddrink"
+    this.api = "foodanddrink";
+    this.endpoint = "recipes";
     this.url = this.base + this.api + "/"
     return this;
 };
@@ -68,7 +180,7 @@ function grab(url) {
 
 Pearson.prototype.listDatasets = function () {
     'use strict';
-    this.addEndpoint('datasets');
+    this.endpoint = 'datasets';
     
     this.addParams({
       limit: 25,
@@ -108,7 +220,7 @@ Pearson.prototype.listDatasets = function () {
       offset:50
     });
 
-    this.addEndpoint('datasets');
+    this.endpoint = 'datasets';
 
     var call = this.buildUrl();
     var datasetsList = grab(call);
@@ -127,7 +239,7 @@ Pearson.prototype.listDatasets = function () {
       offset:75
     });
 
-    this.addEndpoint('datasets');
+    this.endpoint = 'datasets';
 
     var call = this.buildUrl();
     var datasetsList = grab(call);
@@ -140,10 +252,10 @@ Pearson.prototype.listDatasets = function () {
         });
     }
     return out;
-}
+};
 
 
-// Get a document by UID, if you know it! ///RETURN ATRICLE though this brings array or will when base and url are added.
+// Get a document by UID, if you know it! ///RETURN Article - object independant? //Test with food.
 Pearson.prototype.getById = function (id) {
     'use strict';
     var results;
@@ -161,27 +273,7 @@ Pearson.prototype.getById = function (id) {
 };
 
 
-//Add a dataset by id
-Pearson.prototype.dataset = function (dataset) {
-    'use strict';
-    if (typeof dataset === 'undefined') {
-        throw {
-            message: 'Please define a dataset to work in'
-        };
-    } else {
-        this.url = this.url + dataset + '/';
-        return this;
-    }
-};
-
-// Add endepoint for Api call
-Pearson.prototype.addEndpoint = function (endpoint) {
-    'use strict';
-    this.endpoint = endpoint;
-    return this;
-};
-
-// Add url params that limit results.
+// Add url params that limit results. /// To be homologised.
 Pearson.prototype.addParams = function (params) {
     'use strict';
     var url = '';
@@ -198,72 +290,6 @@ Pearson.prototype.addParams = function (params) {
     return this;
 };
 
-// Add search term to the query string
-Pearson.prototype.addSearch = function (searchTerm) {
-    'use strict';
-    var searchString = '';
-    var terms = "&search=" + encodeURIComponent(searchTerm);
-    searchString = searchString + terms;
-    this.searchTerm = searchString.substr(1);
-    return this;
-};
-
-// Add lat and long to query string
-Pearson.prototype.addPosition = function (lat, lon, dist) {
-    'use strict';
-    var pos;
-
-    if (typeof lat === 'undefined') {
-        console.log('latitude is not defined');
-    }
-    if (typeof lon === 'undefined') {
-        console.log('longitude is not defined');
-    }
-    if (typeof dist === 'undefined') {
-        console.log('Please enter a value for the search radius');
-    }
-    var pos = "&lat=" + lat + "&lon=" + lon + "&dist=" + dist;
-    this.position = pos;
-    return this;
-};
-
-// Dictionaries query string compiler
-
-Pearson.prototype.headword = function (searchTerm) {
-    'use strict';
-    var searchString = '';
-    var terms = "&headword=" + encodeURIComponent(searchTerm);
-    searchString = searchString + terms;
-    this.headword = searchString.substr(1);
-    return this;
-};
-
-Pearson.prototype.audio = function (audio) {
-    'use strict'
-    this.audio = audio;
-    return this;
-};
-
-Pearson.prototype.images = function (images) {
-    'use strict'
-    this.images = images;
-    return this;
-}
-
-function toQueryString(bits) {
-    var obj = {audio: bits.audio, images: bits.images }
-    var parts = [];
-    for (var i in obj) {
-        if (obj.hasOwnProperty(i) && (typeof obj[i] !== "undefined" )) {
-            console.log(encodeURIComponent(i));
-            console.log(encodeURIComponent(obj[i]));
-            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
-        }
-        else 
-            parts.push(encodeURIComponent(i))
-    }
-    return parts.join("&");
-};
 
 
 // Construct Url for the API call
@@ -285,7 +311,7 @@ Pearson.prototype.buildUrl = function () {
     } else {
         url
     };
-    //dictionary mods
+    //dictionary mods // not finished
     if (typeof this.headword !== 'undefined') {
         url = url + this.headword
     } else {
@@ -298,6 +324,7 @@ Pearson.prototype.buildUrl = function () {
     };
 
     url = url + this.apiKey;
+
 
     if (url.indexOf("undefined") != -1 || url.indexOf("NaN") != -1) {
         throw {
@@ -349,15 +376,11 @@ function buildIt(objec) {
 };
 
 
-
-// $.fetch synchronous call stored in results
-
 // Debug: async callback - log data and result - look for timing errors.
 
-jQuery.extend({
-    fetch: function (object) {
+    Pearson.prototype.fetch = function() {
       'use strict';
-        var ApiObject = object;
+        var ApiObject = this;
         var result = null;
         var url = buildIt(ApiObject);
 
@@ -396,19 +419,6 @@ jQuery.extend({
         return result;
 
      }
-
-    
-});
-
-
-
-// Old ajax call function for non object pass through
-// // Or is you just want a function to call that returns JSON in one hit:
-// function callApi(url){
-//     var call = url.buildUrl();
-//     var yourData = $.fetch(call);
-//     return yourData;
-// };
 
 /////////////////////////////////////////////////////
 ////        RESULTS time                    ////////
