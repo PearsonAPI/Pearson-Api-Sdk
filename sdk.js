@@ -1,13 +1,11 @@
-// Pearson Top Ten Travel API wrapper.
-// Base Url for API call
+// Pearson Top Ten Travel API wrapper. V0.9
+// Base Url for API call http://api.pearson.com/v2/
 
 function Pearson(apiKey) {
     'use strict';
     if (typeof apiKey === 'undefined') {
-        throw {
-            name: 'Key Undefined Error',
-            message: 'An API key must be defined as a string'
-        };
+        this.base = 'http://api.pearson.com/v2/'
+        this.apiKey = ""
 
     } else {
         this.base = 'http://api.pearson.com/v2/';
@@ -16,19 +14,25 @@ function Pearson(apiKey) {
     }
 }
 
-//Add api section - Can hard code above, but this allows for use in similar apis.
-
-Pearson.prototype.api = function (api) {
+Pearson.prototype.dictionaries = function() {
     'use strict';
-    if (typeof api === 'undefined') {
-        throw {
-            name: 'Api undefined',
-            message: 'Please select an API to work with'
-        };
-    } else {
-        this.url = this.base + api + '/';
-        return this;
-    }
+    this.api = "dictionaries";
+    this.url = this.base + this.api + "/"
+    return this;
+};
+
+Pearson.prototype.travel = function() {
+    'use strict';
+    this.api = "travel";
+    this.url = this.base + this.api + "/"
+    return this;
+};
+
+Pearson.prototype.foodanddrink = function() {
+    'use strict';
+    this.api = "foodanddrink"
+    this.url = this.base + this.api + "/"
+    return this;
 };
 
 
@@ -59,6 +63,8 @@ function grab(url) {
     return result;
 
 }
+
+
 
 Pearson.prototype.listDatasets = function () {
     'use strict';
@@ -133,27 +139,24 @@ Pearson.prototype.listDatasets = function () {
             id: results[i].id
         });
     }
-
-    // If you uncomment this, it will log out all the dataset ids and titles to the console...
-    // console.log(out.length);
-    // var top = out.length;
-    // for (var i = 0; i < top; i++) {
-    //     console.log(out[i].id + out[i].description);
-    // }
     return out;
 }
 
 
-// Get a document by UID, if you know it!
-Pearson.prototype.getArticleById = function (id) {
+// Get a document by UID, if you know it! ///RETURN ATRICLE though this brings array or will when base and url are added.
+Pearson.prototype.getById = function (id) {
     'use strict';
+    var results;
     if (typeof this.endpoint == 'undefined') {
         this.endpoint = 'topten';
-        var z = this.url + this.endpoint + '?' + id + this.apiKey;
-        return z;
+        var z = this.url + this.endpoint + '/' + id + "?" + this.apiKey.substr(1);
+         results = grab(z);
+         return results;
+
     } else {
-        var z = this.url + this.endpoint + '?' + id + this.apiKey;
-        return z;
+        var z = this.url + this.endpoint + '/' + id + "?" + this.apiKey.substr(1);
+         results = grab(z);
+         return results;
     }
 };
 
@@ -224,6 +227,45 @@ Pearson.prototype.addPosition = function (lat, lon, dist) {
     return this;
 };
 
+// Dictionaries query string compiler
+
+Pearson.prototype.headword = function (searchTerm) {
+    'use strict';
+    var searchString = '';
+    var terms = "&headword=" + encodeURIComponent(searchTerm);
+    searchString = searchString + terms;
+    this.headword = searchString.substr(1);
+    return this;
+};
+
+Pearson.prototype.audio = function (audio) {
+    'use strict'
+    this.audio = audio;
+    return this;
+};
+
+Pearson.prototype.images = function (images) {
+    'use strict'
+    this.images = images;
+    return this;
+}
+
+function toQueryString(bits) {
+    var obj = {audio: bits.audio, images: bits.images }
+    var parts = [];
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i) && (typeof obj[i] !== "undefined" )) {
+            console.log(encodeURIComponent(i));
+            console.log(encodeURIComponent(obj[i]));
+            parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        }
+        else 
+            parts.push(encodeURIComponent(i))
+    }
+    return parts.join("&");
+};
+
+
 // Construct Url for the API call
 Pearson.prototype.buildUrl = function () {
     'use strict';
@@ -243,6 +285,12 @@ Pearson.prototype.buildUrl = function () {
     } else {
         url
     };
+    //dictionary mods
+    if (typeof this.headword !== 'undefined') {
+        url = url + this.headword
+    } else {
+        url
+    };//
     if (typeof this.position !== 'undefined') {
         url = url + this.position;
     } else {
@@ -288,15 +336,16 @@ function buildIt(objec) {
 
     url = url + objec.apiKey;
 
-    if (url.indexOf("undefined") != -1 || url.indexOf("NaN") != -1) {
-        throw {
-            name: 'Api or endpoint undefined',
-            message: 'Please select an API and an endpoint to work with'
-        }
-    } else {
+    //Redacted from version where apikey was mandatory
+    // if (url.indexOf("undefined") != -1 || url.indexOf("NaN") != -1) {
+    //     throw {
+    //         name: 'Api or endpoint undefined',
+    //         message: 'Please select an API and an endpoint to work with'
+    //     }
+    // } else {
 
         return url;
-    }
+    //}
 };
 
 
