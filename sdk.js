@@ -196,7 +196,7 @@ Pearson.prototype.listDatasets = function () {
     for (var i = 0; i < len; i++) {
         out.push({
             description: results[i].description,
-            id: results[i].id
+            id: results[i].name
         });
     }
 
@@ -211,7 +211,7 @@ Pearson.prototype.listDatasets = function () {
     for (var i = 0; i < len; i++) {
         out.push({
             description: results[i].description,
-            id: results[i].id
+            id: results[i].name
         });
     }
 
@@ -230,7 +230,7 @@ Pearson.prototype.listDatasets = function () {
     for (var i = 0; i < len; i++) {
         out.push({
             description: results[i].description,
-            id: results[i].id
+            id: results[i].name
         });
     }
 
@@ -248,7 +248,7 @@ Pearson.prototype.listDatasets = function () {
     for (var i = 0; i < len; i++) {
         out.push({
             description: results[i].description,
-            id: results[i].id
+            id: results[i].name
         });
     }
     return out;
@@ -288,6 +288,11 @@ Pearson.prototype.addParams = function (params) {
         this.params = url.substr(1);
     }
     return this;
+};
+
+Pearson.prototype.offset = function() {
+//Hmm split out?
+
 };
 
 
