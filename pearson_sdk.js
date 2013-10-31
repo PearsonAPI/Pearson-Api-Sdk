@@ -9,7 +9,7 @@ function Pearson(apiKey) {
     } else {
         this.base = 'http://api.pearson.com/v2/';
         //this.apiKey = "&apikey=" + apiKey;
-        this.apiKey = apikey;
+        this.apiKey = apiKey;
         return this;
     }
 };
