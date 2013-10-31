@@ -19,7 +19,27 @@ function Pearson(apiKey) {
 Pearson.prototype.dictionaries = function() {
     'use strict';
     this.api = "dictionaries";
-    this.url = this.base + this.api + "/"
+    this.url = this.base + this.api + "/";
+
+    this.entries = function() {
+        'use strict';
+        this.endpoint = "entries";
+        return this;
+    };
+
+    this.addDatasets = function() {
+        // If whitespace is a problem - add .replace(/\s+/g,"") to args to remove. Hopefully.
+        // This resets the url to nil before repopulating.
+        this.url = this.base + this.api + "/";
+        this.datasets = "";
+        var datasets;
+        var args = Array.prototype.slice.call(arguments);
+        this.datasets = args.join(",");
+        console.log(this.datasets);
+        this.url = this.url + this.datasets + '/';
+        return this;
+    };
+
     this.addSearch = function (searchTerm ) {
         var searchString = '';
         var terms = "&search=" + encodeURIComponent(searchTerm);
