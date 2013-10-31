@@ -15,6 +15,18 @@ function Pearson(apiKey) {
 };
 /////// BASE OBJECT END
 
+// Simple 'call the api from the returned url I provide method'
+
+function collect(url) {
+    'use strict'
+    var fullUrl;
+    var base = "http://api.pearson.com"
+    key = this.apiKey
+    
+
+};
+
+
 ///// Dictionaries and methods
 Pearson.prototype.dictionaries = function() {
     'use strict';
