@@ -9,7 +9,7 @@ function Pearson(apiKey) {
     } else {
         this.base = 'http://api.pearson.com/v2/';
         //this.apiKey = "&apikey=" + apiKey;
-        this.apiKey = apikey;
+        this.apiKey = apiKey;
         return this;
     }
 };
@@ -59,7 +59,7 @@ Pearson.prototype.travel = function() {
     	// NB this is purely for listing datasets NOT for specifying them.
     };
 // Specify datasets to work in.
-	this.addDatasets = function() {
+	this.setDatasets = function() {
 		// This adds a comma separated list of datasets between api and endpoint.
         this.url = this.base + this.api + "/";
         this.datasets = "";
@@ -160,9 +160,17 @@ Pearson.prototype.search = function(json, offset, limit ) {
 // Building URL
 
 function constructUrl(obj) {
-	var url;
+    var url = "start";
+    console.log(url);
+    obj.querystring = obj.querystring || obj.apiKey;
+    console.log(obj.querystring);
+    console.log(obj.apiKey);
+    console.log(obj.url);
+    console.log(obj.endpoint);
 
 	var url = obj.url + obj.endpoint + "/?" + obj.querystring;
+    console.log(url)
+
 
 	//console.log(url);
 
