@@ -17,11 +17,21 @@ function Pearson(apiKey) {
 
 // Simple 'call the api from the returned url I provide method'
 
-function collect(url) {
-    'use strict'
+Pearson.prototype.collect = function(url) {
+    'use strict';
     var fullUrl;
-    var base = "http://api.pearson.com"
-    key = this.apiKey
+    var key;
+    var base = "http://api.pearson.com";
+    key = this.apiKey;
+    if (key !== "" || "undefined") {
+        fullUrl = base + url + "?apikey=" + key;
+        console.log(fullUrl);
+        console.log("defined");
+    } else {
+        fullUrl = base + url
+        console.log(fullUrl);
+        console.log("undefined");
+    };
     
 
 };
