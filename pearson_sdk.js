@@ -6,6 +6,7 @@ function Pearson(apikey) {
     'use strict';
     this.apikey = apikey;
     this.base = "http://api.pearson.com/v2/"
+    console.log("HAL 9000 says don't work weekends Lawrie")
     return this;
 };
 
@@ -56,7 +57,8 @@ Pearson.prototype.getById = function(path,id) {
     console.log("Calling on ",path,id)
 };
 
-Pearson.prototype.search = function(json, offset, limit ) {
+
+Endpoint.prototype.search = function(json, offset, limit){
     var query;
 
      limit = limit || 10;
@@ -65,21 +67,72 @@ Pearson.prototype.search = function(json, offset, limit ) {
      json.limit = limit;
      json.offset = offset;
 
-     if (typeof this.apikey === "undefined") {
+     if (typeof this.pearson.apikey === "undefined") {
         query = $.param(json);
-        return query;
+        this.query = query;
      } else {
-        json.apikey = this.apikey;
+        json.apikey = this.pearson.apikey;
         query = $.param(json);
-        return query;
+        this.query = query;
      };
 
      console.log(this);
      console.log(query);
      this.query = query;
-     return this;
+     var ex = constructUrl(this);
+     return ex;
 };
 
+// Build url inc search term - apikey addition is taken care of by search.
 function constructUrl(obj) {
+    var fullUrl;
+    console.log("URL= ", obj);
+    fullUrl = obj.pearson.url + obj.path + "?" + obj.query;
+
+    // insert fetch method here
+     grab(fullUrl);
+
+     return result;
 
 };
+
+// Generic get me stuff from a url method
+function grab(url) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        timeout: 1000, // feel free to mod this 
+        contentType: 'text/plain',
+        xhrFields: {
+            withCredentials: false
+        },
+        async: false,
+        success: function (data) {
+            result = data;
+        },
+        error: function (x, t, m) {
+            if (t === 'timeout') {
+                console.warn("Hmm, request timed out");
+            } else {
+                console.warn(t);
+            }
+        }
+
+    });
+    return result;
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
