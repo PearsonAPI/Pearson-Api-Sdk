@@ -2,26 +2,22 @@
 // Base Url for API call http://api.pearson.com/v2/
 
 /// BASE OBJECT
-function Pearson(apiKey) {
+function Pearson() {
     'use strict';
-    if (typeof apiKey === 'undefined') {
-        this.base = 'http://api.pearson.com/v2/';
-    } else {
-        this.base = 'http://api.pearson.com/v2/';
-        //this.apiKey = "&apikey=" + apiKey;
-        this.apiKey = apiKey;
-        return this;
-    }
+    this.base = "http://api.pearson.com/v2/"
+    return this;
 };
 
 // Dictionaries API
-Pearson.prototype.dictionaries = function() {
+function dictionaries(apiKey) {
 	'use strict';
-	this.api =  "dictionaries";
-	this.url = this.base + this.api + "/"
-	this.endpoint = "entries";
+    var obj;
+    obj = new Pearson;
+	obj.api =  "dictionaries";
+	obj.url = this.base + this.api + "/"
+	obj.endpoint = "entries";
 
-	return this;
+	return obj;
 };
 
 // Travel API
