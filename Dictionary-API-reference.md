@@ -1,40 +1,72 @@
-A short set of notes for the Pearson Food and Drink API.
-================================================
+Searching with the Dictionary API
+=================================
 
-#### Pearson Food and Drink API Endpoint:
-
-To set the API call to Food And Drink, just pass in 'foodanddrink':  
-
-From a base URL of: http://api.pearson.com/v2/foodanddrink
-
-The following endpoints are available:  
-* recipes
-
-So setting:  
+### Accessing the Dictionaries API
 ```Javascript
-var yourVar = new Pearson('apikey').api('foodanddrink').addEndpoint('recipes');  
+var dict = Apis.dictionary(apikey);
 ```
-Will let you access all of the API. (and is required!)
+where the apikey is you key to access the dictionaries API. If no key is specified,
+or the key is a 'sandbox' key, then you will be limitied to searching and retrieving 
+from only a subset of the data available in the dictionaries API (generally, this is
+words begining 'a' to 'c').
 
+### Searching for entries
 
-#### Parameters for the query string  
+```Javascript
+var query = { headword: "cat" }
+var dict = Apis.dictionary(apikey);
+var entries = dict.entries;
+results = entries.search(query)
+```
+### Retriving a full entry
 
-Params 'offset' and 'limit' as integers to offset into the available data or limit the number of results.  
+```Javascript
+var id = "an_entry_id";
+var dict = Apis.dictionary(apikey);
+var entries = dict.entries;
+results = entries.getById(id);
+```
 
-There are a few convenience methods available for this API.  
-After the $.fetch, when you have some results:
+### General Search Syntax
 
-```javascript
-yourResults.getRecipeNames(); // Will return the recipe title and corresponding ID from the results array.  
+Search is based on full-text searching, and is fairly flexible on how you may search 
+for entries in the dictionaries API. 
 
-yourResults.getRecipeFromName(num); // Where num is the index of the recipe in the above array, this will return that complete recipe object.  
+#### Simple searching
 
-yourResults.getRecipeById(id); // Where id is the numerical id of the recipe from the results array, this will return the complete recipe object.  
+The simplest type of search is to 
+#### Searching for multiple terms
+#### Wildcard searching
+#### Fuzzy searching
+
+### Search Properties
+
+The Dictionaries API is searched by passing a suitable JSON object to a search 
+endpoint. This allows for one or more search terms to be added to a query, and
+get the results returned by passing to  
+
+```Javascipt
+var query = { 
+               headword: "",
+               related_words: "",
+               synonyms: "",
+               phrasal_verbs: "",
+               part_of_speech: "",
+               images: "",
+               audio: "",
+               search: ""
+               }
 ```
 
 
-
-
-
+#### headword
+Search dictionary entries based on the +headword+ for the entry. 
+#### related_words
+#### synonyms
+#### phrasal_verbs
+#### part_of_speech
+#### images
+#### audio
+#### search
 
 
