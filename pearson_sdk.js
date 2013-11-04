@@ -83,6 +83,21 @@ Endpoint.prototype.search = function(json, offset, limit){
      return ex;
 };
 
+// Bring me a specific result by Id from the list 
+function getById(id) {////////// WIP 
+    'use strict';
+    var results;
+    var z;
+    if (typeof this.pearson.apikey === "undefined"){
+        z = this.url;
+        results = grab(z);
+        } else { 
+        z = this.url + "?" + this.pearson.apikey.substr(1);
+         results = grab(z); 
+    }
+         return results;
+};
+
 // Build url inc search term - apikey addition is taken care of by search.
 function constructUrl(obj) {
     var fullUrl;
