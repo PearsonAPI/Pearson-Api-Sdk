@@ -49,6 +49,10 @@ Pearson.prototype.setDatasets = function() {
     return this;
 };
 
+Pearson.prototype.listDatasets = function(){
+    //list datasets
+};
+
 // Endpoint(s)
 function Endpoint(pearson,path) {
     this.pearson = pearson;
@@ -69,6 +73,7 @@ Endpoint.prototype.setDatasets = function() {
 
 
 Endpoint.prototype.search = function(json, offset, limit){
+    'use strict';
     var query;
     var fullUrl;
 
@@ -103,6 +108,19 @@ Endpoint.prototype.getById = function(Id) {
     return grab(fullUrl);
 };
 
+// fetches an item / article by the url provided on the results object.
+Endpoint.prototype.getByUrl = function(url) {
+    'use strict';
+    var itemUrl;
+    var prepend = "http://api.pearson.com"
+    if (typeof this.pearson.apikey === "undefined") {
+        itemUrl = prepend + url 
+    } else {
+        itemUrl = prepend + url + "?" + this.pearson.apikey;
+    };
+    return grab(itemUrl);
+};
+
 // Generic get me stuff from a url method
 function grab(url) {
     $.ajax({
@@ -129,6 +147,8 @@ function grab(url) {
     return result;
 
 };
+
+
 
 
 
