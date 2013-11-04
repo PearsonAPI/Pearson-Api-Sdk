@@ -49,6 +49,20 @@ Pearson.prototype.setDatasets = function() {
     return this;
 };
 
+
+// fetches an item / article by the url provided on the results object.
+Pearson.prototype.getByUrl = function(url) {
+    'use strict';
+    var itemUrl;
+    var prepend = "http://api.pearson.com"
+    if (typeof this.apikey === "undefined") {
+        itemUrl = prepend + url 
+    } else {
+        itemUrl = prepend + url + "?" + this.apikey;
+    };
+    return grab(itemUrl);
+};
+
 Pearson.prototype.listDatasets = function(){
     //list datasets
 };
@@ -102,7 +116,7 @@ Endpoint.prototype.getById = function(Id) {
 
     var fullUrl = this.pearson.url + this.path + "/"+Id;
 
-    if (typeof this.pearson.apikey === "undefined") {
+    if (typeof this.pearson.apikey !== "undefined" && this.pearson.apikey != "") {
         fullUrl = fullUrl + "?apikey="+this.pearson.apikey
     }
     return grab(fullUrl);
