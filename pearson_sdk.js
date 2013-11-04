@@ -18,7 +18,6 @@ function Pearson(apikey) {
     'use strict';
     this.apikey = apikey;
     this.base = "http://api.pearson.com/v2/"
-    console.log("HAL 9000 says don't work weekends Lawrie")
     return this;
 };
 
@@ -37,6 +36,19 @@ Pearson.prototype.travel = function() {
 
 };
 
+Pearson.prototype.setDatasets = function() {
+    // Arguments can be more than one comma delimited string. Whitespace is stripped.
+    var args;
+    var split;
+    var stripped;
+
+    var args = Array.prototype.slice.call(arguments);
+        split = args.join(",");
+        stripped = split.replace(/\s+/g,"");
+        this.datasets = stripped;
+    return this;
+};
+
 // Endpoint(s)
 function Endpoint(pearson,path) {
     this.pearson = pearson;
@@ -50,6 +62,7 @@ Endpoint.prototype.getById = function(Id) {
 
 Endpoint.prototype.search = function(json, offset, limit){
     var query;
+    var fullUrl;
 
     json.limit = limit || 10;
     json.offset = offset || 0;
@@ -63,8 +76,11 @@ Endpoint.prototype.search = function(json, offset, limit){
         this.query = query;
      };
 
-     var fullUrl = this.pearson.url + this.path + "?" + query;
-
+     if (typeof this.pearson.datasets === "undefined"){
+         fullUrl = this.pearson.url + this.path + "?" + query;
+     } else {
+        fullUrl = this.pearson.url + this.pearson.datasets + "/" + this.path + "?" + query;
+     };
     return grab(fullUrl);
 };
 
