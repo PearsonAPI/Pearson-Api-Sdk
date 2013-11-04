@@ -55,10 +55,18 @@ function Endpoint(pearson,path) {
     this.path = path; //Set by the dot method??
 };
 
-Endpoint.prototype.getById = function(Id) {
-    this.pearson.getById(this.path,Id)
+Endpoint.prototype.setDatasets = function() {
+    var args;
+    var split;
+    var stripped;
+
+    var args = Array.prototype.slice.call(arguments);
+        split = args.join(",");
+        stripped = split.replace(/\s+/g,"");
+        this.pearson.datasets = stripped;
     return this;
 };
+
 
 Endpoint.prototype.search = function(json, offset, limit){
     var query;
