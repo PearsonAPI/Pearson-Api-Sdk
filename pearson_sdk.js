@@ -29,6 +29,22 @@ Pearson.prototype.dictionaries = function() {
     return this;
 };
 
+Pearson.prototype.foodanddrink = function() {
+    'use strict';
+    this.api = "foodanddrink";
+    this.url = this.base + this.api + "/";
+    this.recipes = new Endpoint(this, "recipes");
+    return this;
+};
+
+Pearson.prototype.ftarticles = function() {
+    'use strict';
+    this.api = "ftarticles";
+    this.url = this.base + this.api + "/";
+    this.articles = new Endpoint(this, "articles");
+    return this;
+};
+
 Pearson.prototype.travel = function() {
     'use strict';
     this.api = "travel";
