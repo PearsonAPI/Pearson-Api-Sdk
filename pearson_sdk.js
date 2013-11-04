@@ -57,6 +57,40 @@ Pearson.prototype.travel = function() {
 
 };
 
+
+/// Work in progress, eject if you like.
+
+
+// Pearson.prototype.listDatasets = function() {
+//     'use strict';
+//     var out = [];
+//     this.path = "datasets";
+//     var call = this.base + this.api + "/" + this.path;
+//     var offset = 0;
+//     var results = grab(this.url + this.path + "?" +offset);
+//     // var len = results.length;
+//     var tot = results.total;
+//     var count = 0;
+
+//     for (var i = 0; i < tot; i += count) {
+//         var dUrl = this.url + this.path + "?offset=" + i;
+//         var res = grab(dUrl);
+//         var len = res.length;
+//         var resArr = [];
+//         for (var k = 0; k < len; k++){
+//             resArr.push({
+//                 description: res.results[k].description,
+//                 datasetName: res.results[k].name
+//             });
+//         }
+//         console.log(i);
+//         count = results.count;       
+//         out.push(resArr);
+//     };
+//     console.log("outer", out);
+//     return out;
+// };
+
 Pearson.prototype.setDatasets = function() {
     // Arguments can be more than one comma delimited string. Whitespace is stripped.
     var args;
@@ -84,15 +118,13 @@ Pearson.prototype.expandUrl = function(url) {
     return itemUrl;
 };
 
-Pearson.prototype.listDatasets = function(){
-    //list datasets
-};
 
 // Endpoint(s)
 function Endpoint(pearson,path) {
     this.pearson = pearson;
     this.path = path;
 };
+
 
 Endpoint.prototype.setDatasets = function() {
     var args;
