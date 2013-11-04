@@ -33,6 +33,11 @@ Pearson.prototype.travel = function() {
     'use strict';
     this.api = "travel";
     this.url = this.base + this.api + "/";
+    this.topten = new Endpoint(this, "topten");
+    this.streetsmart = new Endpoint(this, "streetsmart");
+    this.aroundtown = new Endpoint(this, "around_town");
+    this.places = new Endpoint(this, "places");
+    return this;
 
 };
 
@@ -51,7 +56,7 @@ Pearson.prototype.setDatasets = function() {
 
 
 // fetches an item / article by the url provided on the results object.
-Pearson.prototype.getByUrl = function(url) {
+Pearson.prototype.expandUrl = function(url) {
     'use strict';
     var itemUrl;
     var prepend = "http://api.pearson.com"
@@ -60,7 +65,7 @@ Pearson.prototype.getByUrl = function(url) {
     } else {
         itemUrl = prepend + url + "?" + this.apikey;
     };
-    return grab(itemUrl);
+    return itemUrl;
 };
 
 Pearson.prototype.listDatasets = function(){
@@ -70,7 +75,7 @@ Pearson.prototype.listDatasets = function(){
 // Endpoint(s)
 function Endpoint(pearson,path) {
     this.pearson = pearson;
-    this.path = path; //Set by the dot method??
+    this.path = path;
 };
 
 Endpoint.prototype.setDatasets = function() {
@@ -123,7 +128,7 @@ Endpoint.prototype.getById = function(Id) {
 };
 
 // fetches an item / article by the url provided on the results object.
-Endpoint.prototype.getByUrl = function(url) {
+Endpoint.prototype.expandUrl = function(url) {
     'use strict';
     var itemUrl;
     var prepend = "http://api.pearson.com"
@@ -132,7 +137,7 @@ Endpoint.prototype.getByUrl = function(url) {
     } else {
         itemUrl = prepend + url + "?" + this.pearson.apikey;
     };
-    return grab(itemUrl);
+    return itemUrl;
 };
 
 // Generic get me stuff from a url method
