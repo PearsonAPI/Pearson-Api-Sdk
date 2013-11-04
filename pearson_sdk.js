@@ -190,6 +190,8 @@ Endpoint.prototype.expandUrl = function(url) {
 
 // Generic get me stuff from a url method
 function grab(url) {
+    var result;
+
     $.ajax({
         url: url,
         type: 'GET',
@@ -199,34 +201,20 @@ function grab(url) {
             withCredentials: false
         },
         async: false,
+        crossDomain: true,
         success: function (data) {
             result = data;
         },
         error: function (x, t, m) {
             if (t === 'timeout') {
-                console.warn("Hmm, request timed out");
+                result = { status: 500, message:"Timeout error"};
             } else {
                 console.warn(t);
             }
+            result = jQuery.parseJSON(x.responseText);
         }
 
     });
     return result;
 
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
