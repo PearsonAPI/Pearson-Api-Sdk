@@ -5,7 +5,7 @@ This document describes how to use the Pearson SDK to access the Dictionaries AP
 ### Accessing the Dictionaries API
 Start be connecting to the Dictionaries API object provided by the Pearson SDK (see example below). 
 ```Javascript
-var dict = Apis.dictionary(apikey);
+var dict = PearsonApis.dictionary(apikey);
 ```
 
 where the _apikey_ is you key to access the Pearson Dictionaries API. 
