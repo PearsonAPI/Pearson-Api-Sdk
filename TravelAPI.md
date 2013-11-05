@@ -70,7 +70,7 @@ This will ensure that only the specified travel datasets are searched.
 ### Listing Datasets Available
 There are almost 90 different datasets in the Travel API. A list of of available dataset names and a description of the area they cover, can be obtained by using the ```datasets``` endpoint.
 ```
-var results = travel.datasets().search()
+var results = travel.dataset().search()
 ```
 
 

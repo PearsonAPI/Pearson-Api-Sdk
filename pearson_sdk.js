@@ -53,6 +53,8 @@ Pearson.prototype.travel = function() {
     this.streetsmart = new Endpoint(this, "streetsmart");
     this.aroundtown = new Endpoint(this, "around_town");
     this.places = new Endpoint(this, "places");
+    this.dataset = new Endpoint(this, "datasets");
+    this.categories = new Endpoint(this, "categories");
     return this;
 
 };
@@ -126,9 +128,9 @@ Endpoint.prototype.search = function(json, offset, limit){
         this.query = query;
     };
 
-    if (typeof this.pearson.datasets === "undefined"){
+    if (typeof this.pearson.datasets === "undefined" || this.pearson.datasets == ""){
      fullUrl = this.pearson.url + this.path + "?" + query;
- } else {
+    } else {
     fullUrl = this.pearson.url + this.pearson.datasets + "/" + this.path + "?" + query;
 };
 return grab(fullUrl);
