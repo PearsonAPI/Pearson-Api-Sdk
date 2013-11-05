@@ -10,6 +10,9 @@ var Apis = {
     },
     foodanddrink: function(apikey) {
         return new Pearson(apikey).foodanddrink();
+    },
+    ftarticles: function(apikey) {
+        return new Pearson(apikey).ftarticles();
     }
 };
 
@@ -39,7 +42,7 @@ Pearson.prototype.foodanddrink = function() {
 
 Pearson.prototype.ftarticles = function() {
     'use strict';
-    this.api = "ftarticles";
+    this.api = "ft";
     this.url = this.base + this.api + "/";
     this.articles = new Endpoint(this, "articles");
     return this;
