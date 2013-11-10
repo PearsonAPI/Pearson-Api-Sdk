@@ -1,3 +1,5 @@
+/// NB: This original SDK has been superceded by the file pearson_sdk.js
+
 // Pearson Top Ten Travel API wrapper. V0.9
 // Base Url for API call http://api.pearson.com/v2/
 /// BASE OBJECT
