@@ -1,12 +1,6 @@
 //- it should accept a base url "http://api.pearson.com/v2"
 //- it should be able to have an endpoint "/topten/etc"
-//- it shoud be able to parse positional arguments "topten/positional"
-//- it shout be able to parse a query string "/topten/postiional/?limit=20"
-//- it should be able to fetch and return data as JSON
-//- it should be able to add an Api Key to the query string
-//- it should be able to list datasets
-//- it should be able to get an atricle by endpoint or id
-//- it should be able to modify the returned object for further methods.
+
 
 describe("Pearson API object", function() {
 	var travel =  PearsonApis.travel("akeyhere");
@@ -114,171 +108,50 @@ describe("Searching within specific datasets using the setDsets function", funct
 		expect(sets1.pearson.dsets).toEqual("one,two,three");
 	});
 
+	it("or a collection of strings comma separated", function(){
+		var sets2 = test.setDsets("one", "two", "three");
+		expect(sets2.pearson.dsets).toEqual("one,two,three");
+	});
+
 });
 
-//////Ok to here.
-
-describe("The $.fetch function", function(){
-		var travel = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-		travel.api('travel').addEndpoint('topten');
+describe("The getById function", function(){
+	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var test = travel.topten;
+	var rArt = test.getById("4av3a5NScQdhZ1");
 
 	it("should return a 200 ok from the server", function() {
-		var yourData = $.fetch(travel);
-		expect(yourData.json.status).toEqual(200);
+		expect(rArt.status).toEqual(200);
+	});
+
+	it("should contain a url in the returned object", function(){
+		expect(rArt.url).toBeDefined();
 	});
 
 });
 
-describe("The Ajax content object", function() {
-	travel = new Pearson("MdanoFGnnqcsI8fXArfKxW63mTTG2tG4");
-	travel.api('travel');
-	travel.dataset('tt_newyor');
-	travel.addEndpoint('topten');
-	ajaxlump = $.fetch(travel)
+// Searching
 
-	it("should be an AjaxContent object", function() {
-		expect(ajaxlump).toEqual(jasmine.any(AjaxContent))
-	  
+describe("Searching", function(){
+	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var test = travel.topten;
+	var srTrm = { search: "bar", offset: "5" };
+	var res = test.search(srTrm);
+
+	it("should take a JSON object as an argument", function(){
+		expect(test.search(srTrm)).toBeDefined();
 	});
 
-	describe("The functions available to the object", function(){
-
-		it("the raw function should return just the json from the AjaxContent object", function() {
-		  raw = ajaxlump.raw();
-		  expect(raw).toEqual(ajaxlump.json);
-		});
-		
-		it("should contain the components from the original Pearson object", function() {
-			raw = ajaxlump.raw();
-			expect(raw.components).toBeDefined();   
-		 });
-
-		it("the getUrl method should return an array of urls", function() {
-			urls = ajaxlump.getUrl();
-			expect(urls[1].url).toContain("http://");		    
-		});  
-
-		it("the introText method should return an array containing introtext strings", function() {
-			textfield = ajaxlump.introText();
-		  	expect(textfield[0].text).toBeDefined();
-		});
-
-		it("the getResultUrl function should return one result as a string", function() {
-			oneResult = ajaxlump.getResultUrl(1);
-			expect(typeof oneResult).toEqual("string");
-		 });
-
+	it("should have defaults that are not undefined", function(){
+		expect(res.url).not.toContain("undefined");
 	});
 
-	describe("The nextSet function", function(){
-		it("should advance the result offset by the number of results returned to advance to the next set", function(){
-			nextTest = ajaxlump.nextSet();
-			expect(ajaxlump.raw().offset + ajaxlump.raw().count).toEqual(nextTest.raw().offset);
-		});
-
-	});
-});
-
-
-
-describe("The list functions", function() {
-		var travel = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-		travel.api('travel');
-
-	it("listDatsets should return an array of objects from the datasets endpoint", function(){
-		var dats = travel.listDatasets();
-		expect(JSON.stringify(dats)).toContain('id');
-		expect(JSON.stringify(dats)).toContain('description');
+	it("should return a 200 ok from the server", function(){
+		expect(res.status).toEqual(200);
 	});
 
-  
-});
-
-describe("Retrieving an item by article id", function() {
-		var travel = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-		travel.api('travel');
-		var idtest = travel.getArticleById('articleId');
-
-	it("should create a query string with the article Id in", function(){
-		expect(idtest).toContain('?articleId');
-		expect(idtest).toContain('travel');
-	});
-
-	it("the query should have enough attributes to call the url", function(){
-		expect(idtest).toContain('http://api.pearson.com/v2/travel/')
-		expect(idtest).toContain('?')		
-		expect(travel.url).toBeDefined();
-		expect(travel.endpoint).toBeDefined();
-		expect(travel.apiKey).toBeDefined();
-	});
-
-	
-  
-});
-
-///Slice Checks
-
-describe("Complete function checks", function() {
-	var chainTest = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-        chainTest.api('travel').dataset("someplace").addEndpoint('topten').addPosition(20, 30, 40).addSearch('restaurants');
-    var outPutTest = chainTest.buildUrl();
-    	returnTest = $.fetch(chainTest);
-    	
-
-	it("should have a url with no undefined parts", function() {
-		expect(outPutTest).not.toContain('undefined');
-	});
-  
-  	it("should return a 200 OK from the server", function(){
-  		expect($.fetch(chainTest).json.status).toEqual(200);
-  	});
-
-  	var minimumTest = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-  		minimumTest.api('travel').addEndpoint('places');
-  	var placeTest = $.fetch(minimumTest);
-
-  	it("endpoint search should not be empty if the call is returned as a 200", function(){
-  		expect(placeTest.json.status).toEqual(200) && expect(placeTest.json.total).toBeGreaterThan(0);
-  	});
 
 });
-
-
-/// Food and Drink Checks
-
-describe("Food and drink specific methods", function() {
-	var foodTest = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw").api('foodanddrink').addEndpoint('recipes').addSearch('chicken');
-  	var recipes = $.fetch(foodTest);
-
-  	it("should return a 200 ok from the server", function() {
-  	  expect(recipes.json.status).toEqual(200);
-  	});
-
-  	it("should contain a results array", function () {
-  		expect(recipes.json.results).toBeDefined();
-  	});
-
-  	describe("the results methods", function() {
-  		var resArray = recipes.getRecipeNames();
-  		var fromame = recipes.getRecipeFromName(2);
-  		var testID = fromame.id
-  		var fromId = recipes.getRecipeById(testID)
-
-  		it("should return the names and ids  of the results array", function(){
-  			expect(resArray[0].id).toBeDefined();
-  			expect(resArray[0].recipeName).toBeDefined();;
-  		});
-
-  		it("should be able to get a result from that array by index number", function() {
-  		  expect(fromame.result).toBeDefined();
-  		});
-  	  		
-  	  	it("should be able to get the same result from the array by ID", function() {
-  	  	  expect(testID).toEqual(fromId.id);
-  	  	});
-  	});
-});
-
 
 
 
