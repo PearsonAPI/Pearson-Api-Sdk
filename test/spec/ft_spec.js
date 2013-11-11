@@ -25,3 +25,12 @@ describe("The FT Articles Api", function(){
 
 });
 
+describe("In the sandbox:", function(){
+	var ft = PearsonApis.ftarticles()
+	var res = ft.articles.search();
+
+	it("should return a response without an apikey", function(){
+		expect(res.status).toEqual(200);
+	});
+})
+
