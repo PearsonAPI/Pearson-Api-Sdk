@@ -166,6 +166,15 @@ describe("Searching", function(){
 
 });
 
+describe("In the sandbox:", function(){
+	var trav = PearsonApis.travel()
+	var res = trav.topten.search();
+
+	it("should return a response without an apikey", function(){
+		expect(res.status).toEqual(200);
+	});
+})
+
 
 
 

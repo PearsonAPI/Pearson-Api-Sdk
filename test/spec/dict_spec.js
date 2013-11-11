@@ -36,3 +36,12 @@ describe("The Dictionaries Api", function(){
 
 
 });
+
+describe("In the sandbox:", function(){
+	var word = PearsonApis.dictionaries()
+	var res = word.entries.search();
+
+	it("should return a response without an apikey", function(){
+		expect(res.status).toEqual(200);
+	});
+})

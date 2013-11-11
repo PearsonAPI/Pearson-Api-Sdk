@@ -24,3 +24,12 @@ describe("The Food Api", function(){
 
 
 });
+
+describe("In the sandbox:", function(){
+	var food = PearsonApis.foodanddrink()
+	var res = food.recipes.search();
+
+	it("should return a response without an apikey", function(){
+		expect(res.status).toEqual(200);
+	});
+})
