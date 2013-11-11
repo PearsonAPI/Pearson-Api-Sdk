@@ -62,7 +62,7 @@ Pearson.prototype.travel = function() {
 
 };
 
-Pearson.prototype.setDatasets = function() {
+Pearson.prototype.setDsets = function() {
     // Arguments can be more than one comma delimited string. Whitespace is stripped.
     var args;
     var split;

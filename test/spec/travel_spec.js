@@ -9,25 +9,10 @@
 //- it should be able to modify the returned object for further methods.
 
 describe("Pearson API object", function() {
-	var travel =  new Pearson("akeyhere");
-
-// note: toThrow only workds by passing an anonymous function to expect.
-	it("should throw an error if no api key is passed in", function() {
-	  expect( function (){ new Pearson(); }).toThrow();
-	});
+	var travel =  PearsonApis.travel("akeyhere");
 
 	it("should throw an error if the api key is not a string", function(){
-		expect( function(){ new Pearson(apikey); }).toThrow();
-	});
-
-	it("should throw an error if the buildUrl function is called without specifics", function() {
-	  expect( function (){
-	  	new Pearson('apikey').buildUrl();
-	  }).toThrow();
-	});
-	
-	it("should be an object", function(){
-		expect(new Pearson('akeyhere')).toEqual(jasmine.any(Pearson));
+		expect( function(){ PearsonApis.travel(apikey); }).toThrow();
 	});
 
 	it("should have a base URL for the API", function(){
@@ -37,94 +22,92 @@ describe("Pearson API object", function() {
 });
 
 describe("new Api object", function() {
-	var travel =  new Pearson("akeyhere");
+	var travel =  PearsonApis.travel("akeyhere");
 
-	it("should throw an error if the buildUrl function is called before an api or endpoint are specified", function() {
-		expect( function(){
-			travel.buildUrl();
-		}).toThrow();
-	  
+	it("should be a travel api object", function(){
+		expect(travel.api).toEqual("travel");
 	});
   
 	it("should take an api key in string format and append it to a query string", function(){
-		expect(travel.apiKey).toEqual("&apikey=akeyhere");
+		expect(travel.apikey).toEqual("akeyhere");
+	});
+// Endpoints
+	it("should have an aroundtown object available to it", function(){
+		expect(travel.aroundtown).toBeDefined();
 	});
 
-	it("should take a string as an argument to set the api to call", function(){
-		travel.api('travel');
-		expect(travel.url).toEqual("http://api.pearson.com/v2/travel/");
+	it("should have a topten object available to it", function(){
+		expect(travel.topten).toBeDefined();
 	});
 
-	it("should be able to have a set endpoint", function(){
-		travel.addEndpoint('topten');
-		expect(travel.endpoint).toEqual('topten');
+	it("should have a categories object available to it", function(){
+		expect(travel.categories).toBeDefined();
 	});
 
-	it("should be able to have limiting parameters added", function(){
-		travel.addParams({ offset: 10, limit:20 });
-		expect(travel.params).toEqual('offset=10&limit=20');
+	it("should have a dataset object available to it", function(){
+		expect(travel.dataset).toBeDefined();
 	});
 
-	it("should not return undefined if no parameter set", function(){
-		travel.addParams();
-		expect(travel.params).toBeDefined;
+	it("should have a places object available to it", function(){
+		expect(travel.places).toBeDefined();
 	});
 
-	it("should have a default parameter", function(){
-		travel.addParams();
-		expect(travel.params).toEqual('offset=0');
+	it("should have an streetsmart object available to it", function(){
+		expect(travel.streetsmart).toBeDefined();
 	});
 
-	it("should take search terms in the query string", function(){
-		travel.addSearch("searchterm");
-		expect(travel.searchTerm).toEqual('search=searchterm');
+	it("should take the endpoint name as a method and set the path", function(){
+		expect(travel.topten.path).toEqual("topten");
+		expect(travel.aroundtown.path).toEqual("around_town");
+	});
+	
+//
+	
+	// it("should encode the search terms in query format", function(){
+	// 	travel.addSearch("your search here");
+	// 	expect(travel.searchTerm).not.toEqual('search=your search here');
+	// 	expect(travel.searchTerm).toEqual('search=your%20search%20here');
+	// });
+
+	
+});
+
+describe("The Endpoint object", function(){
+	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var test = travel.topten;
+
+	it("should be be created when the endpoint method is called on the PearsonApis object", function(){
+		expect(test.constructor.name).toEqual("Endpoint");
 	});
 
-	it("should add search terms as a query string when buildUrl is called", function(){
-		travel.api('travel').dataset('newyork').addEndpoint('topten').addSearch("searchterm").buildUrl();
-		expect(travel.buildUrl()).toContain('&search=searchterm');
+	it("should have a path for the endpoint", function(){
+		expect(test.path).toEqual("topten");
 	});
 
-	it("should encode the search terms in query format", function(){
-		travel.addSearch("your search here");
-		expect(travel.searchTerm).not.toEqual('search=your search here');
-		expect(travel.searchTerm).toEqual('search=your%20search%20here');
-	});
-
-	it("should be able to add latitude, longitude and distance to the query", function(){
-		travel.addPosition(10, 20, 30);
-		expect(travel.position).toEqual('&lat=10&lon=20&dist=30');
-	});
-
-	it("should log an error to console if lat, long or distance aren't defined", function(){
-		travel.addPosition(10, 10);
-		expect(this.console).toEqual(console.log('Please enter a value for the search radius'));
+	it("should contain a pearson object", function(){
+		expect(test.pearson).toBeDefined();
 	});
 
 });
 
-describe("The build url function", function() {
+describe("The expandUrl function", function() {
+	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var test = travel.topten;
 
-	var travel = new Pearson("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-		travel.api('travel');
-
-	it("should throw an error if the url contains an undefined segment", function() {
-		  expect( function(){
-		  	travel.api().buildUrl();
-		  }).toThrow();
-	});
-	
-  
-  	it("should take the endpoint passed to the object and construct and URL for the API call with that endpoint", function(){
-  		travel.addEndpoint('topten');
-  		travel.buildUrl();
-  		expect(travel.buildUrl()).toEqual("http://api.pearson.com/v2/travel/topten?&apikey=JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-  		expect(travel.addEndpoint('streetsmart').buildUrl()).toEqual("http://api.pearson.com/v2/travel/streetsmart?&apikey=JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	  
+  	it("should remove whitespace from the url", function(){
+  		expect(test.expandUrl("stuff")).not.toContain(' ');
   	});
 
-  	it("should throw an error if there are spaces in the url")
-  		expect(travel.api('travel').addEndpoint('topten').buildUrl()).not.toContain(' ');
+  	it("should add a base url to the provided input", function(){
+  		expect(test.expandUrl("stuff")).toContain("http:");
+  	});
+
   });
+
+describe("Searching within datasets", function(){
+
+});
 
 //////Ok to here.
 
@@ -137,14 +120,6 @@ describe("The $.fetch function", function(){
 		expect(yourData.json.status).toEqual(200);
 	});
 
-	it("should return an AjaxContent object", function(){
-
-	});
-
-	it("the AjaxContent object should contain a JSON response", function(){
-		var yourData = $.fetch(travel);
-		expect(yourData.json).toEqual(jasmine.any(Object));
-	})
 });
 
 describe("The Ajax content object", function() {

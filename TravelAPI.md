@@ -62,7 +62,7 @@ where _id_ is the Id of the document you wish to retrieve.
 ### Limiting Search to Specific Travel Datasets
 You can limit the search of the Travel API to spefic _datasets_ prior to searching.
 ```
-places.setDatasets("tt_dublin,tt_newyor");
+places.setDsets("tt_dublin,tt_newyor");
 places.search(searchobj);
 ```
 This will ensure that only the specified travel datasets are searched. 
