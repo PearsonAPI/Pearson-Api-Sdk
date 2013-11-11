@@ -1,6 +1,6 @@
 ## Pearson FT Education API
 
-This document describes how to use the Pearson SDK to access the Financial Times Education Api. For further details of this API and it's usage, please see [Pearson Food And Drink API](http://developer.pearson.com/apis/ft-education-api/).
+This document describes how to use the Pearson SDK to access the Financial Times Education Api. For further details of this API and it's usage, please see [Pearson FT Education API](http://developer.pearson.com/apis/ft-education-api/).
 
 ### Accessing the FT API  
 Start by connecting to the Food and Drink API object provided by the SDK: 
