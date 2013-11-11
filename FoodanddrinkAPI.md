@@ -12,7 +12,7 @@ var food = PearsonApis.foodanddrink("apikey");
 If no key is specified, or is a 'sandbox' key, searches will return a limited subset of information.  
 
 #### Endpoint: recipes  
-The only endpoint for the Food and Drink is 'recipes':
+The only endpoint for the Food and Drink API is 'recipes':
 
 ```Javascript
 var food = PearsonApis.foodanddrink("apikey");

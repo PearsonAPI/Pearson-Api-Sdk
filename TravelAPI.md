@@ -3,12 +3,12 @@
 This document describes how to use the Pearson SDK to access the Travel API. For further details of this API and it's usage, please see [Pearson Travel API](http://developer.pearson.com/apis/topten-travel-guides/).
 
 ### Accessing the Travel API
-Start be connecting to the Travel API object provided by the Pearson SDK (see example below). 
+Start by connecting to the Travel API object provided by the Pearson SDK (see example below). 
 ```Javascript
-var dict = PearsonApis.travel(apikey);
+var dict = PearsonApis.travel("apikey");
 ```
 
-where the _apikey_ is you key to access the Pearson Travel API. 
+where the _apikey_ is your key to access the Pearson Travel API. 
 
 If no key is specified, or the key is a 'sandbox' key, then you will be limitied to searching and retrieving from only a subset of the data available in the Travel API.
 
