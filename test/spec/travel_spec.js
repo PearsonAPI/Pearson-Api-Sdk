@@ -105,7 +105,14 @@ describe("The expandUrl function", function() {
 
   });
 
-describe("Searching within datasets", function(){
+describe("Searching within specific datasets using the setDsets function", function(){
+	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var test = travel.topten;
+
+	it("should take either a string of sets, comma separated", function(){
+		var sets1 = test.setDsets("one, two, three");
+		expect(sets1.pearson.dsets).toEqual("one,two,three");
+	});
 
 });
 

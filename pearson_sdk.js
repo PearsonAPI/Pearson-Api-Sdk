@@ -97,7 +97,7 @@ function Endpoint(pearson,path) {
 };
 
 
-Endpoint.prototype.setDatasets = function() {
+Endpoint.prototype.setDsets = function() {
     var args;
     var split;
     var stripped;
