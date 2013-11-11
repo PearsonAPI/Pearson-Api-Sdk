@@ -6,7 +6,7 @@ This document describes how to use the Pearson SDK to access the Financial Times
 Start by connecting to the FT API object provided by the SDK: 
 ```Javascript
 var ft = PearsonApis.ftarticles("apikey");
-//where apikey is the key to access the Pearson Food and Drink API
+//where apikey is the key to access the Pearson FT API
 ```
 
 If no key is specified, or is a 'sandbox' key, searches will return a limited subset of information.  
