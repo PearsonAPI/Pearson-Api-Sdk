@@ -71,7 +71,7 @@ Pearson.prototype.setDsets = function() {
     var args = Array.prototype.slice.call(arguments);
     split = args.join(",");
     stripped = split.replace(/\s+/g,"");
-    this.datasets = stripped;
+    this.dsets = stripped;
     return this;
 };
 
@@ -105,7 +105,7 @@ Endpoint.prototype.setDatasets = function() {
     var args = Array.prototype.slice.call(arguments);
     split = args.join(",");
     stripped = split.replace(/\s+/g,"");
-    this.pearson.datasets = stripped;
+    this.pearson.dsets = stripped;
     return this;
 };
 
@@ -131,10 +131,10 @@ Endpoint.prototype.search = function(json, offset, limit){
         this.query = query;
     };
 
-    if (typeof this.pearson.datasets === "undefined" || this.pearson.datasets == ""){
+    if (typeof this.pearson.dsets === "undefined" || this.pearson.dsets == ""){
      fullUrl = this.pearson.url + this.path + "?" + query;
     } else {
-    fullUrl = this.pearson.url + this.pearson.datasets + "/" + this.path + "?" + query;
+    fullUrl = this.pearson.url + this.pearson.dsets + "/" + this.path + "?" + query;
 };
 return grab(fullUrl);
 };
