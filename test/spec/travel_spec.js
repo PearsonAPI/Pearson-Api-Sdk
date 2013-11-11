@@ -134,9 +134,12 @@ describe("The getById function", function(){
 
 describe("Searching", function(){
 	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
+	var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var test = travel.topten;
+	var dtest = travel2.topten.setDsets("tt_newyor");
 	var srTrm = { search: "bar", offset: "5" };
 	var res = test.search(srTrm);
+	var dres = dtest.search(srTrm);
 
 	it("should take a JSON object as an argument", function(){
 		expect(test.search(srTrm)).toBeDefined();
@@ -148,6 +151,16 @@ describe("Searching", function(){
 
 	it("should return a 200 ok from the server", function(){
 		expect(res.status).toEqual(200);
+	});
+
+	it("should return less results when refined by dataset", function(){
+		expect(res.count).toBeGreaterThan(dres.count);
+	});
+
+	it("should return articles that exist", function(){
+		expect(res.results[0]).toBeDefined();
+		expect(dres.results[0]).toBeDefined();
+
 	});
 
 
