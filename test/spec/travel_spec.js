@@ -15,7 +15,7 @@ describe("Pearson API object", function() {
 
 });
 
-describe("new Api object", function() {
+describe("The Travel API object", function() {
 	var travel =  PearsonApis.travel("akeyhere");
 
 	it("should be a travel api object", function(){
