@@ -21,7 +21,7 @@ In order to search or retrieve entries from the Dictionaries API, you need to us
 that the API provides. 
 
 ```Javascript
-var dict = PearsonApis.dicitonary(my_apikey);
+var dict = PearsonApis.dicitonaries(my_apikey);
 var entries = dict.entries;
 ```
 
