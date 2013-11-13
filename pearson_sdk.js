@@ -84,7 +84,7 @@ Pearson.prototype.expandUrl = function(url) {
     if (typeof this.apikey === "undefined") {
         itemUrl = prepend + url 
     } else {
-        itemUrl = prepend + url + "?" + this.apikey;
+        itemUrl = prepend + url + "?apikey=" + this.apikey;
     };
     return itemUrl;
 };
