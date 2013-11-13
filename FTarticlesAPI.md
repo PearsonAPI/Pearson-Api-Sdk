@@ -49,9 +49,9 @@ _offset_ and _limit_ are optional zero-based indexes into the results returned, 
 One search example could be:  
 ```Javascript
 var searchobj = {
-	search = "technology",
-	headline = "Foxconn",
-	contributors = "Henry Mance"
+	search: "technology",
+	headline: "Foxconn",
+	contributors: "Henry Mance"
 }
 
 articles.search(searchobj, 0, 10);

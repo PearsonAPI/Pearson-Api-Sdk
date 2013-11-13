@@ -5,7 +5,7 @@ This document describes how to use the Pearson SDK to access the Travel API. For
 ### Accessing the Travel API
 Start by connecting to the Travel API object provided by the Pearson SDK (see example below). 
 ```Javascript
-var dict = PearsonApis.travel("apikey");
+var travel = PearsonApis.travel("apikey");
 ```
 
 where the _apikey_ is your key to access the Pearson Travel API. 
