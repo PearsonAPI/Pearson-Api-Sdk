@@ -158,7 +158,7 @@ Endpoint.prototype.expandUrl = function(url) {
     if (typeof this.pearson.apikey === "undefined") {
         itemUrl = prepend + url 
     } else {
-        itemUrl = prepend + url + "?" + this.pearson.apikey;
+        itemUrl = prepend + url + "?apikey=" + this.pearson.apikey;
     };
     return itemUrl;
 };
