@@ -25,7 +25,7 @@ describe("The Dictionaries Api", function(){
 	it("should be able to be refined by dataset / dictionary", function(){
 		var search = { headword: "dog" }
 		var test1 = PearsonApis.dictionaries("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
-		var d = test1.entries.setDsets("ldoce5");
+		var d = test1.entries.setDatasets("ldoce5");
 		var ldoce5 = d.search(search);
 		var test2 = PearsonApis.dictionaries("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 		var alldict = test2.entries.search(search);
