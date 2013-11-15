@@ -1,7 +1,7 @@
-var PearsonApis = (function() {
+// Pearson Top Ten Travel API wrapper. V0.9
 // Base Url for API call http://api.pearson.com/v2/
 
-var Apis = {
+var Api = {
     dictionaries: function(apikey) { 
         return new Pearson(apikey).dictionaries(); 
     },
@@ -10,11 +10,8 @@ var Apis = {
     },
     foodanddrink: function(apikey) {
         return new Pearson(apikey).foodanddrink();
-    },
-    ftarticles: function(apikey) {
-        return new Pearson(apikey).ftarticles();
     }
-};
+ };
 
 /// BASE OBJECT
 function Pearson(apikey) {
@@ -32,52 +29,40 @@ Pearson.prototype.dictionaries = function() {
     return this;
 };
 
-Pearson.prototype.foodanddrink = function() {
-    'use strict';
-    this.api = "foodanddrink";
-    this.url = this.base + this.api + "/";
-    this.recipes = new Endpoint(this, "recipes");
-    return this;
-};
-
-Pearson.prototype.ftarticles = function() {
-    'use strict';
-    this.api = "ft";
-    this.url = this.base + this.api + "/";
-    this.articles = new Endpoint(this, "articles");
-    return this;
-};
-
 Pearson.prototype.travel = function() {
     'use strict';
     this.api = "travel";
     this.url = this.base + this.api + "/";
-    this.topten = new Endpoint(this, "topten");
-    this.streetsmart = new Endpoint(this, "streetsmart");
-    this.aroundtown = new Endpoint(this, "around_town");
-    this.places = new Endpoint(this, "places");
-    this.dataset = new Endpoint(this, "datasets");
-    this.categories = new Endpoint(this, "categories");
-    return this;
 
 };
 
-Pearson.prototype.setDsets = function() {
+Pearson.prototype.setDatasets = function() {
     // Arguments can be more than one comma delimited string. Whitespace is stripped.
     var args;
     var split;
     var stripped;
 
     var args = Array.prototype.slice.call(arguments);
-    split = args.join(",");
-    stripped = split.replace(/\s+/g,"");
-    this.dsets = stripped;
+        split = args.join(",");
+        stripped = split.replace(/\s+/g,"");
+        this.datasets = stripped;
     return this;
 };
 
+Pearson.prototype.expandUrl = function(url) {
+    'use strict';
+    var itemUrl;
+    var prepend = "http://api.pearson.com"
+    if (typeof this.apikey === "undefined" || this.apikey == "") {
+        itemUrl = prepend + url 
+    } else {
+        itemUrl = prepend + url + "?" + this.apikey;
+    };
+    return itemUrl;
+};
 
 // fetches an item / article by the url provided on the results object.
-Pearson.prototype.expandUrl = function(url) {
+Pearson.prototype.getByUrl = function(url) {
     'use strict';
     var itemUrl;
     var prepend = "http://api.pearson.com"
@@ -86,26 +71,28 @@ Pearson.prototype.expandUrl = function(url) {
     } else {
         itemUrl = prepend + url + "?" + this.apikey;
     };
-    return itemUrl;
+    return grab(itemUrl);
 };
 
+Pearson.prototype.listDatasets = function(){
+    //list datasets
+};
 
 // Endpoint(s)
 function Endpoint(pearson,path) {
     this.pearson = pearson;
-    this.path = path;
+    this.path = path; //Set by the dot method??
 };
 
-
-Endpoint.prototype.setDsets = function() {
+Endpoint.prototype.setDatasets = function() {
     var args;
     var split;
     var stripped;
 
     var args = Array.prototype.slice.call(arguments);
-    split = args.join(",");
-    stripped = split.replace(/\s+/g,"");
-    this.pearson.dsets = stripped;
+        split = args.join(",");
+        stripped = split.replace(/\s+/g,"");
+        this.pearson.datasets = stripped;
     return this;
 };
 
@@ -115,28 +102,25 @@ Endpoint.prototype.search = function(json, offset, limit){
     var query;
     var fullUrl;
 
-    if (typeof json === 'undefined') {
-        json = {}
-    }
-
     json.limit = limit || 10;
     json.offset = offset || 0;
 
-    if (typeof this.pearson.apikey === "undefined") {
+     if (typeof this.pearson.apikey === "undefined") {
         query = $.param(json);
         this.query = query;
-    } else {
+     } else {
         json.apikey = this.pearson.apikey;
         query = $.param(json);
         this.query = query;
-    };
+     };
 
-    if (typeof this.pearson.dsets === "undefined" || this.pearson.dsets == ""){
-     fullUrl = this.pearson.url + this.path + "?" + query;
-    } else {
-    fullUrl = this.pearson.url + this.pearson.dsets + "/" + this.path + "?" + query;
-};
-return grab(fullUrl);
+     if (typeof this.pearson.datasets === "undefined"){
+         fullUrl = this.pearson.url + this.path + "?" + query;
+     } else {
+        fullUrl = this.pearson.url + this.pearson.datasets + "/" + this.path + "?" + query;
+     };
+     console.log("Search => ",fullUrl);
+    return grab(fullUrl);
 };
 
 Endpoint.prototype.getById = function(Id) {
@@ -151,7 +135,7 @@ Endpoint.prototype.getById = function(Id) {
 };
 
 // fetches an item / article by the url provided on the results object.
-Endpoint.prototype.expandUrl = function(url) {
+Endpoint.prototype.getByUrl = function(url) {
     'use strict';
     var itemUrl;
     var prepend = "http://api.pearson.com"
@@ -160,7 +144,7 @@ Endpoint.prototype.expandUrl = function(url) {
     } else {
         itemUrl = prepend + url + "?" + this.pearson.apikey;
     };
-    return itemUrl;
+    return grab(itemUrl);
 };
 
 // Generic get me stuff from a url method
@@ -184,12 +168,30 @@ function grab(url) {
             if (t === 'timeout') {
                 result = { status: 500, message:"Timeout error"};
             } else {
-                result = jQuery.parseJSON(x.responseText);
+                console.warn(t);
             }
+            console.log("xhr => ",x,t,m);
+            result = jQuery.parseJSON(x.responseText);
+            console.log("Result = >",result)
         }
+
     });
     return result;
 
 };
-return Apis;
-}());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
