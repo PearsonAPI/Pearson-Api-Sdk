@@ -171,10 +171,10 @@ function grab(url) {
         url: url,
         type: 'GET',
         timeout: 1000, // feel free to mod this 
-        contentType: 'text/plain',
-        // xhrFields: {
-        //     withCredentials: false
-        // },
+        dataType: "json",
+        xhrFields: {
+            withCredentials: false
+        },
         async: false,
         crossDomain: true,
         success: function (data) {
@@ -184,7 +184,7 @@ function grab(url) {
             if (t === 'timeout') {
                 result = { status: 500, message:"Timeout error"};
             } else {
-                result = jQuery.parseJSON(x.responseText);
+                result = x.responseText;
             }
         }
     });
