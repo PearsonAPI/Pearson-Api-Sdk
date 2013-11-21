@@ -172,9 +172,6 @@ function grab(url) {
         type: 'GET',
         timeout: 1000, // feel free to mod this 
         dataType: "json",
-        xhrFields: {
-            withCredentials: false
-        },
         async: false,
         crossDomain: true,
         success: function (data) {
