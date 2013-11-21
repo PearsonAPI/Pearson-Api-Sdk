@@ -104,12 +104,12 @@ describe("Searching within specific datasets using the setDsets function", funct
 	var test = travel.topten;
 
 	it("should take either a string of sets, comma separated", function(){
-		var sets1 = test.setDsets("one, two, three");
+		var sets1 = test.setDatasets("one, two, three");
 		expect(sets1.pearson.dsets).toEqual("one,two,three");
 	});
 
 	it("or a collection of strings comma separated", function(){
-		var sets2 = test.setDsets("one", "two", "three");
+		var sets2 = test.setDatasets("one", "two", "three");
 		expect(sets2.pearson.dsets).toEqual("one,two,three");
 	});
 
@@ -136,7 +136,7 @@ describe("Searching", function(){
 	var travel = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var travel2 = PearsonApis.travel("JZNt3YM1veh1d6HDiCpA86vFJvuRefjw");
 	var test = travel.topten;
-	var dtest = travel2.topten.setDsets("tt_newyor");
+	var dtest = travel2.topten.setDatasets("tt_newyor");
 	var srTrm = { search: "bar", offset: "5" };
 	var res = test.search(srTrm);
 	var dres = dtest.search(srTrm);

@@ -63,7 +63,7 @@ where _id_ is the Id of the entry you wish to retrieve.
 ### Limiting Search to Specific Dictionaries
 You can limit the search of the Dictionaries API to spefic _datasets_ prior to searching.
 ```
-entries.setDsets("ldoce5,lasde");
+entries.setDatasets("ldoce5,lasde");
 entries.search(searchobj);
 ```
 This will ensure that only the specified dictionaries are searched. The _datasets_ should be specified as a comma-delimited string of one or more of the following allowable _datasets_:
