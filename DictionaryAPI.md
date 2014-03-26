@@ -72,6 +72,7 @@ This will ensure that only the specified dictionaries are searched. The _dataset
 * lasde - Longman Active Study Guide
 * ldec - Longman English Chinese dictionary
 * wordwise - Longman WordWise dictionary
+* laad3 - Longman Advanced American English dictionary
 
 
 
